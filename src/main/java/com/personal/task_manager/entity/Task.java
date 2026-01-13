@@ -8,13 +8,15 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 enum STATUS{
-	PENDING,COMPLETED,CANCALLED
+	PENDING,COMPLETED,CANCALLED,INPROGRESS
 }
 
 @Entity
@@ -39,13 +41,19 @@ public class Task {
 	@Column(name="end_time")
 	private Timestamp endTo;
 	
+	@Column(name="assigned_to")
+	@OneToOne
+	private Taskuser user;
+	
+	@Column(name="created_at")
+	private Timestamp createdAt;
 	
 	public Task() {
 		super();
-		
 	}
-
-	public Task(Long id, String name, String description, STATUS status, Timestamp startFrom, Timestamp endTo) {
+	
+	public Task(Long id, String name, String description, STATUS status, Timestamp startFrom, Timestamp endTo,
+			Taskuser user, Timestamp createdAt) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -53,6 +61,16 @@ public class Task {
 		this.status = status;
 		this.startFrom = startFrom;
 		this.endTo = endTo;
+		this.user = user;
+		this.createdAt = createdAt;
+	}
+
+	public Taskuser getUser() {
+		return user;
+	}
+
+	public void setUser(Taskuser user) {
+		this.user = user;
 	}
 
 	public Long getId() {
